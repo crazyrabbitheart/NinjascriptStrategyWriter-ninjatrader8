@@ -1,0 +1,27 @@
+I'm a day trader trading MNQ but i'm hoping to help automate some of my trade management to improve consistency and speed of entry
+
+//Overall objective
+I want to build a trend continuation strategy that enters a limit order that will get filled if there is a deep enough pullback in a trend. This will be a semi-automated strategy, where I will identify the trend myself via discretionary technical analysis, and then manually enable the strategy to manage the entry, and trade management.
+
+//Identify the recent high and plot the value on the chart
+The strategy will first identify the most recent high (Let's call this RecentHigh)
+and find the highest price of the last x number of bars (Let's call this variable LookBackValue with a default value of 20 bars)
+I want this to plot as a horizontal line that starts at the high and extends to the right of the chart, but not to the left. I also would love if the line style and color could be modified through the GUI.
+
+//Entry condition
+As soon as I enable the strategy, it should instantly submit a buy limit order to enter long, 75 ticks below the recent high. As price moves higher, the "RecentHigh" value will increase, and the limit order will need to trail, or "chase" price so that it is always 75 ticks below the RecentHigh, and will fill the limit order on the next pullback that retraces deep enough
+
+//Stop loss
+If the limit order is hit and we enter into a position, I want an initial stop loss of 75 ticks. The stop loss will start off static, but once price moves 75 ticks into profit, the stop begins to trail 150 ticks away.
+
+//Possibility of adding to winning positions
+If possible, and not too much trouble, I would love to have the ability to add to winning positions during future pullbacks. I would like a check box in the GUI to "Add to winners" in which, if checked, the strategy will continue to buy each additional pullback in the trend, adding to the position, as long as the max position size (variable) has not been reached. If this box is left UNCHECKED, the I only want 1 entry, and do NOT add to the position during future pullbacks. I would like to have fields in the GUI for "Max position size, "Initial contract size", and "additional contract size", so for example I can enter with 2 contracts on the first entry, and then 1 contract on future pullbacks.
+If the strategy adds to the position during a future pullback, it should update the quantity of the stop loss, rather than submitting a separate stop loss for the new order. We will probably need to have a condition where it will not submit a new buy order to add to the position, unless price moves a favorable distance into profit (like 150 ticks past the previous entry, so that the stop will be at break even by the time it averages up). This will prevent the strategy from entering another contract if price immediately enters into a trading range (consolidation) without trending higher first (a new leg)
+
+//Profit Target
+There should also be a profit target 500 ticks away. The stop loss and profit target should be OCO orders so that once one of them is hit, the other is canceled (once the position is closed, all working orders should be canceled and the strategy should be disabled)
+
+All number values are theoretical and should be variables that I can edit in the GUI.
+The Strategy will be applied to a tick chart, so it needs to update on price change, or "on each tick" and not "on bar close"
+
+I will need a second, separate strategy for going short, in which everything is the opposite (find the recent Low price and enter a sell order 75 ticks above the recent low) I will decide which strategy to enable based on my discretionary bias at the time.
